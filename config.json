@@ -1,0 +1,6 @@
+{
+    "useServerToDownloadFile": false,
+    "saveToFileUrl": "",
+    "fileNameForAllSessions": "COGMAP_Sessions.json",
+    "fileNameTplForSession": "COGMAP_Sessions_${name}.json"
+}
