@@ -1,4 +1,4 @@
-# SaveSession-Widget 1.2
+# SaveSession-Widget
 The SaveSession Widget for ArcGIS Web AppBuilder enables users to save the current map settings into a session and restore them again later. A saved session includes the extent, visible layers and annotations of the current map. Sessions may be saved and loaded from files so they can be shared with others.
 
 ##Using the Widget
@@ -56,6 +56,9 @@ To add this widget to your ArcGIS WebApp Builder:
 
 * download the zip file of the widget
 * unzip the contents into client\stemapp\widgets\SaveSession directory
+
+![Install Folder](./help/InstallFolder.png)
+
 * edit the \client\stemapp\config.json and enter the SaveSession widget in the widgets entry
 
 Example:
