@@ -419,6 +419,12 @@ define(['dojo/_base/declare',
              */
             onSaveToFileButtonClicked: function (e) {
 
+                if (!this.config.useServerToDownloadFile) {
+                    // skipping since there is no url to submit to
+                    console.log('SaveSession :: onSaveToFileButtonClicked :: saveToFileForm submit canceled.');
+                    return;
+                }
+
                 var sessionString = JSON.stringify(this.sessions);
 
                 // update form values
