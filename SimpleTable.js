@@ -602,7 +602,7 @@ define(['dojo/_base/declare',
                         })));
                     } else if (item === 'load') {
                         var loadDiv = html.create('div', {
-                            'class': 'action-item jimu-float-leading row-load-div jimu-icon jimu-icon-load'
+                            'class': 'action-item jimu-float-leading row-load-div jimu-icon jimu-icon-add'
                         }, actionItemParent);
                         loadDiv.title = "Load Map";
                         this.own(on(loadDiv, 'click', lang.hitch(this, function (event) {
