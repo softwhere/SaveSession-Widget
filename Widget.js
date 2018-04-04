@@ -584,6 +584,9 @@ define(['dojo/_base/declare',
                     this.setLayersOnMap(sessionToLoad.layers);
                 }
 
+                // fire custom event
+                topic.publish("SaveSession/SessionLoaded", sessionToLoad);
+
                 console.log('SaveSession :: loadSession :: session  = ', sessionToLoad);
             },
 
@@ -595,7 +598,10 @@ define(['dojo/_base/declare',
                 var propName = "",
                     layerSettings,
                     layer,
-                    addGraphicsToLayer;
+                    addGraphicsToLayer,
+                    visibleLayers = [],
+                    removeItem = [],
+                    i = 0;
 
                 array.forEach(settings, function (layerSettings) {
                     layer = this.map.getLayer(layerSettings.id);
@@ -613,15 +619,39 @@ define(['dojo/_base/declare',
                     }
 
                     if (layerSettings.visibleLayers && layer.setVisibleLayers) {
-                        layer.setVisibleLayers(layerSettings.visibleLayers);
+
+                        var visibleLayers = lang.clone(layerSettings.visibleLayers);
+                        if (!layerSettings.visibleLayers.length) {
+                            // for no visible layers use array of -1
+                            // drackleyad :: note that in order to properly interpret a layer as truly 'off', it requires an array consisting only of three '-1' values
+                            visibleLayers = [-1, -1, -1];
+                        } else {
+                            // has some visible layers
+                            removeItem = [];
+                            array.forEach(visibleLayers, function (visibleLayer, index) {
+                                if (visibleLayer === -1) {
+                                    removeItem.push(index);
+                                }
+                            });
+
+                            for (i = removeItem.length; i-- > 0;) {
+                                visibleLayers.splice(i, 1);
+                            }
+                        }
+
+                        layer.setVisibleLayers(visibleLayers);
                     }
 
                     console.log('SaveSession :: loadSession :: setLayersOnMap completed for layer = ', layer.id);
                 }, this);
 
+                // fire custom event
+                topic.publish("layersChanged");
+
                 // fire refresh event 
                 LayerInfos.getInstance(this.map, this.map.itemInfo).then(function (layerInfosObject) { // fire change event to trigger update
                     on.emit(layerInfosObject, "updated");
+                    on.emit(layerInfosObject, "layerInfosChanged");
                     //layerInfosObject.onlayerInfosChanged();
                 });
 
