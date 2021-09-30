@@ -437,7 +437,7 @@ define(['dojo/_base/declare',
                 console.log('SaveSession :: onSaveToFileButtonClicked :: end');
             },
 
-            /**
+             /**
              * save the single item to file
              * @param {Object} e the event args 
              */
@@ -452,12 +452,23 @@ define(['dojo/_base/declare',
                 sessions.push(e.item);
                 sessionString = JSON.stringify(sessions);
 
-                // update form values
-                this.saveToFileName.value = fileName;
-                this.saveToFileContent.value = sessionString;
+                
+                if (!this.config.useServerToDownloadFile) {
+                    // if not using a server download the json file as base 64
+                    var a = document.createElement("a");
+                    a.href = "data:application/octet-stream," + sessionString
+                    a.download = fileName
+                    a.click(); //Downloaded file
+                } else {
+                    // use a data url to save the file, if not using a server url
+                    // if useServerToDownloadFile, use a form post to a service instead
+                    // update form values
+                    this.saveToFileName.value = fileName;
+                    this.saveToFileContent.value = sessionString;
 
-                // trigger the post to server side
-                this.saveToFileForm.submit();
+                    // trigger the post to server side
+                    this.saveToFileForm.submit();
+                }
 
                 console.log('SaveSession :: onSaveItemToFileClicked :: end');
             },
